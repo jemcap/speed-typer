@@ -10,6 +10,18 @@ const difficultySelect = document.getElementById("difficulty");
 
 let easyWords;
 
+// Declare intial time
+let time = 10;
+
+// Declare intial score
+let score = 0;
+
+let difficulty;
+
+text.focus();
+
+const timeInterval = setInterval(updateTime, 1000);
+
 fetch("words.json")
   .then((res) => res.json())
   .then((words) => {
@@ -30,7 +42,31 @@ fetch("words.json")
       if (wordInput === easyWords) {
         genNewWord();
         text.value = "";
+        updateScore();
       }
     });
   })
   .catch((error) => console.error("Error fetching JSON:", error));
+
+function updateScore() {
+  score++;
+  scoreEl.textContent = score;
+}
+
+function updateTime() {
+  time--;
+  timeEl.innerHTML = `${time}s`;
+  if (time === 0) {
+    clearInterval(timeInterval);
+    gameOver();
+  }
+}
+
+function gameOver() {
+  endGameEl.innerHTML = `
+    <h1>Game Over!</h2>
+    <p>Your final score is ${score}</p>
+    <button onclick="location.reload()">Play Again</button>
+    `;
+  endGameEl.style.display = "flex";
+}
