@@ -16,7 +16,14 @@ let time = 10;
 // Declare intial score
 let score = 0;
 
-let difficulty;
+// Get difficulty from localStorage
+let difficulty =
+  localStorage.getItem("difficulty") !== null
+    ? localStorage.getItem("difficulty")
+    : "medium";
+console.log(difficulty);
+
+difficultySelect.value = localStorage.getItem("difficulty");
 
 text.focus();
 
@@ -70,3 +77,14 @@ function gameOver() {
     `;
   endGameEl.style.display = "flex";
 }
+
+settingsBtn.addEventListener("click", () => {
+  settings.classList.toggle("hide");
+});
+
+settingsForm.addEventListener("change", (e) => {
+  difficulty = e.target.value;
+  localStorage.setItem("difficulty", difficulty);
+  location.reload();
+  console.log(e.target.value);
+});
