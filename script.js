@@ -24,8 +24,8 @@ console.log(difficulty);
 const initialTimes = {
   easy: 7,
   medium: 10,
-  hard: 15,
-  expert: 20,
+  hard: 30,
+  expert: 45,
 };
 
 let time = initialTimes[difficulty] || 7;
@@ -33,10 +33,12 @@ let time = initialTimes[difficulty] || 7;
 function addDifficultyTimer() {
   if (difficulty === "easy") {
     time += 3;
-  } else if (difficulty === "medium" || difficulty === "hard") {
-    time += 10;
-  } else if (difficulty === "expert") {
+  } else if (difficulty === "medium") {
+    time += 12;
+  } else if (difficulty === "hard") {
     time += 15;
+  } else if (difficulty === "expert") {
+    time += 20;
   }
 }
 
