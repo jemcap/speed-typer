@@ -11,6 +11,9 @@ const typeTime = document.getElementById("typing-speed");
 
 let groupOfWords;
 
+let wordInput;
+let typingSpeed;
+
 // Declare intial score
 let score = 0;
 
@@ -68,7 +71,7 @@ fetch("words.json")
     genNewWord();
 
     text.addEventListener("input", (e) => {
-      let wordInput = e.target.value.trim();
+      wordInput = e.target.value.trim();
       word.innerHTML = groupOfWords
         .split("")
         .map((letter, index) => {
@@ -80,32 +83,53 @@ fetch("words.json")
         })
         .join("");
       if (wordInput === groupOfWords) {
-        const endTime = Date.now();
-        const elapsedTimeInSeconds = (endTime - startTime) / 1000;
-        const typedWordCount = wordInput.split(/\s+/).length;
-        const typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
-        console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
-        typeTime.innerHTML = `Typing speed: ${typingSpeed.toFixed(2)} WPM`;
+        // const endTime = Date.now();
+        // const elapsedTimeInSeconds = (endTime - startTime) / 1000;
+        // const typedWordCount = wordInput.split(/\s+/).length;
+        // const typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
+        // console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
         // Reset start time for the next word
-        startTime = Date.now();
+        updateScore();
 
         genNewWord();
+        startTime = Date.now();
         text.value = "";
+        typeTime.innerHTML = `Typing speed: ${typingSpeed.toFixed(2)} WPM`;
         addDifficultyTimer();
-        updateScore();
       }
     });
   })
   .catch((error) => console.error("Error fetching JSON:", error));
 
 function updateScore() {
-  score++;
+  const endTime = Date.now();
+  const elapsedTimeInSeconds = (endTime - startTime) / 1000;
+  const typedWordCount = wordInput.split(/\s+/).length;
+  typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
+  console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
+  if (typingSpeed.toFixed(2) > 60) {
+    score += 3;
+  } else if (typingSpeed.toFixed(2) > 50 && typingSpeed.toFixed(2) <= 60) {
+    score += 2;
+  } else {
+    score++;
+  }
+
   scoreEl.textContent = score;
+  scoreEl.style.color = "green";
 }
 
 function updateTime() {
   time--;
   timeEl.innerHTML = `${time}s`;
+  timeEl.classList.add = "timer";
+  if (time > 6) {
+    timeEl.style.color = "#fff";
+  } else if (time <= 6 && time > 3) {
+    timeEl.style.color = "orange";
+  } else if (time <= 3) {
+    timeEl.style.color = "red";
+  }
   if (time === 0) {
     clearInterval(timeInterval);
     gameOver();
