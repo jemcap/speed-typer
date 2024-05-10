@@ -20,7 +20,7 @@ let score = 0;
 let difficulty =
   localStorage.getItem("difficulty") !== null
     ? localStorage.getItem("difficulty")
-    : "medium";
+    : "easy";
 console.log(difficulty);
 
 difficultySelect.value = localStorage.getItem("difficulty");
@@ -32,12 +32,13 @@ const timeInterval = setInterval(updateTime, 1000);
 fetch("words.json")
   .then((res) => res.json())
   .then((words) => {
+    const wordSet = localStorage.getItem("difficulty");
     function getRandomWord() {
-      return Math.floor(Math.random() * words.easy.length);
+      return Math.floor(Math.random() * words[wordSet].length);
     }
 
     function genNewWord() {
-      easyWords = words.easy[getRandomWord()]; // Assign easyWords here
+      easyWords = words[wordSet][getRandomWord()]; // Assign easyWords here
       word.textContent = easyWords;
     }
 
