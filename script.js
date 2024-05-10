@@ -8,10 +8,7 @@ const settings = document.getElementById("settings");
 const settingsForm = document.getElementById("settings-form");
 const difficultySelect = document.getElementById("difficulty");
 
-let easyWords;
-
-// Declare intial time
-let time = 10;
+let groupOfWords;
 
 // Declare intial score
 let score = 0;
@@ -22,6 +19,26 @@ let difficulty =
     ? localStorage.getItem("difficulty")
     : "easy";
 console.log(difficulty);
+
+// Declare initial time based on difficulty
+const initialTimes = {
+  easy: 7,
+  medium: 10,
+  hard: 15,
+  expert: 20,
+};
+
+let time = initialTimes[difficulty] || 7;
+
+function addDifficultyTimer() {
+  if (difficulty === "easy") {
+    time += 3;
+  } else if (difficulty === "medium" || difficulty === "hard") {
+    time += 10;
+  } else if (difficulty === "expert") {
+    time += 15;
+  }
+}
 
 difficultySelect.value = localStorage.getItem("difficulty");
 
@@ -38,18 +55,28 @@ fetch("words.json")
     }
 
     function genNewWord() {
-      easyWords = words[wordSet][getRandomWord()]; // Assign easyWords here
-      word.textContent = easyWords;
+      groupOfWords = words[wordSet][getRandomWord()]; // Assign groupOfWords here
+      word.textContent = groupOfWords;
     }
 
     genNewWord();
 
     text.addEventListener("input", (e) => {
-      console.log(e.target.value);
       let wordInput = e.target.value;
-      if (wordInput === easyWords) {
+      word.innerHTML = groupOfWords
+        .split("")
+        .map((letter, index) => {
+          if (wordInput[index] === letter) {
+            return `<span class="correct">${letter}</span>`;
+          } else {
+            return `<span class="incorrect">${letter}</span>`;
+          }
+        })
+        .join("");
+      if (wordInput === groupOfWords) {
         genNewWord();
         text.value = "";
+        addDifficultyTimer();
         updateScore();
       }
     });
@@ -88,4 +115,17 @@ settingsForm.addEventListener("change", (e) => {
   localStorage.setItem("difficulty", difficulty);
   location.reload();
   console.log(e.target.value);
+});
+
+// Prevent copy and pasting to text input
+text.addEventListener("copy", function (e) {
+  e.preventDefault();
+});
+
+text.addEventListener("cut", function (e) {
+  e.preventDefault();
+});
+
+text.addEventListener("paste", function (e) {
+  e.preventDefault();
 });
