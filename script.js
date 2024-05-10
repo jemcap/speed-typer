@@ -7,6 +7,7 @@ const settingsBtn = document.getElementById("settings-btn");
 const settings = document.getElementById("settings");
 const settingsForm = document.getElementById("settings-form");
 const difficultySelect = document.getElementById("difficulty");
+const typeTime = document.getElementById("typing-speed");
 
 let groupOfWords;
 
@@ -22,23 +23,25 @@ console.log(difficulty);
 
 // Declare initial time based on difficulty
 const initialTimes = {
-  easy: 7,
-  medium: 10,
+  easy: 10,
+  medium: 15,
   hard: 30,
   expert: 45,
 };
 
 let time = initialTimes[difficulty] || 7;
 
+let startTime;
+
 function addDifficultyTimer() {
   if (difficulty === "easy") {
     time += 3;
   } else if (difficulty === "medium") {
-    time += 12;
+    time += 7;
   } else if (difficulty === "hard") {
-    time += 15;
+    time += 12;
   } else if (difficulty === "expert") {
-    time += 20;
+    time += 15;
   }
 }
 
@@ -57,6 +60,7 @@ fetch("words.json")
     }
 
     function genNewWord() {
+      startTime = Date.now(); // Reset startTime when a new word is generated
       groupOfWords = words[wordSet][getRandomWord()]; // Assign groupOfWords here
       word.textContent = groupOfWords;
     }
@@ -64,7 +68,7 @@ fetch("words.json")
     genNewWord();
 
     text.addEventListener("input", (e) => {
-      let wordInput = e.target.value;
+      let wordInput = e.target.value.trim();
       word.innerHTML = groupOfWords
         .split("")
         .map((letter, index) => {
@@ -76,6 +80,15 @@ fetch("words.json")
         })
         .join("");
       if (wordInput === groupOfWords) {
+        const endTime = Date.now();
+        const elapsedTimeInSeconds = (endTime - startTime) / 1000;
+        const typedWordCount = wordInput.split(/\s+/).length;
+        const typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
+        console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
+        typeTime.innerHTML = `Typing speed: ${typingSpeed.toFixed(2)} WPM`;
+        // Reset start time for the next word
+        startTime = Date.now();
+
         genNewWord();
         text.value = "";
         addDifficultyTimer();
