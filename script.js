@@ -9,6 +9,8 @@ const settingsForm = document.getElementById("settings-form");
 const difficultySelect = document.getElementById("difficulty");
 const typeTime = document.getElementById("typing-speed");
 
+let typedWords = [];
+
 let groupOfWords;
 
 let wordInput;
@@ -83,13 +85,9 @@ fetch("words.json")
         })
         .join("");
       if (wordInput === groupOfWords) {
-        // const endTime = Date.now();
-        // const elapsedTimeInSeconds = (endTime - startTime) / 1000;
-        // const typedWordCount = wordInput.split(/\s+/).length;
-        // const typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
-        // console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
-        // Reset start time for the next word
         updateScore();
+
+        addTypedWord(groupOfWords, typingSpeed);
 
         genNewWord();
         startTime = Date.now();
@@ -136,11 +134,21 @@ function updateTime() {
   }
 }
 
+function addTypedWord(word, speed) {
+  typedWords.push({ word, speed });
+}
+
 function gameOver() {
+  let typedWordsHTML = typedWords
+    .map((item) => {
+      return `<li>${item.word}: ${item.speed.toFixed(2)} WPM</li>`;
+    })
+    .join("");
   endGameEl.innerHTML = `
     <h1>Game Over!</h2>
     <p>Your final score is ${score}</p>
     <button onclick="location.reload()">Play Again</button>
+    <ul>${typedWordsHTML}</ul>
     `;
   endGameEl.style.display = "flex";
 }
