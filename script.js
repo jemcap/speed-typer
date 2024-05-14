@@ -17,7 +17,7 @@ let wordInput;
 let typingSpeed;
 
 // Declare intial score
-let score = 0;
+let score;
 
 // Get difficulty from localStorage
 let difficulty =
@@ -30,8 +30,8 @@ console.log(difficulty);
 const initialTimes = {
   easy: 10,
   medium: 15,
-  hard: 30,
-  expert: 45,
+  hard: 45,
+  expert: 75,
 };
 
 let time = initialTimes[difficulty] || 7;
@@ -67,7 +67,17 @@ fetch("words.json")
     function genNewWord() {
       startTime = Date.now(); // Reset startTime when a new word is generated
       groupOfWords = words[wordSet][getRandomWord()]; // Assign groupOfWords here
-      word.textContent = groupOfWords;
+
+      // Clear previous word and cursor
+      word.innerHTML = "";
+
+      // Append the word
+      word.innerHTML += groupOfWords;
+
+      // Append the animated cursor
+      const cursorSpan = document.createElement("span");
+      cursorSpan.classList.add("cursor");
+      word.appendChild(cursorSpan);
     }
 
     genNewWord();
@@ -84,6 +94,7 @@ fetch("words.json")
           }
         })
         .join("");
+
       if (wordInput === groupOfWords) {
         updateScore();
 
@@ -105,16 +116,21 @@ function updateScore() {
   const typedWordCount = wordInput.split(/\s+/).length;
   typingSpeed = (typedWordCount / elapsedTimeInSeconds) * 60;
   console.log(`Typing speed: ${typingSpeed.toFixed(2)} words per minute`);
-  if (typingSpeed.toFixed(2) > 60) {
-    score += 3;
-  } else if (typingSpeed.toFixed(2) > 50 && typingSpeed.toFixed(2) <= 60) {
-    score += 2;
+  if (typingSpeed.toFixed(2) > 90) {
+    score = "Fantastic!";
+    scoreEl.style.color = "limegreen";
+  } else if (typingSpeed.toFixed(2) > 60 && typingSpeed.toFixed(2) <= 90) {
+    score = "Great!";
+    scoreEl.style.color = "green";
+  } else if (typingSpeed.toFixed(2) > 40 && typingSpeed.toFixed(2) <= 60) {
+    score = "Good!";
+    scoreEl.style.color = "orange";
   } else {
-    score++;
+    score = "Slow";
+    scoreEl.style.color = "red";
   }
 
   scoreEl.textContent = score;
-  scoreEl.style.color = "green";
 }
 
 function updateTime() {
@@ -139,19 +155,54 @@ function addTypedWord(word, speed) {
 }
 
 function gameOver() {
+  let totalSpeed = 0;
+  let averageSpeed = 0;
+
+  typedWords.forEach((word) => {
+    totalSpeed += word.speed;
+  });
+
+  if (typedWords.length > 0) {
+    averageSpeed = totalSpeed / typedWords.length;
+  }
+
   let typedWordsHTML = typedWords
     .map((item) => {
-      return `<li>${item.word}: ${item.speed.toFixed(2)} WPM</li>`;
+      return `<li class="game-over__list">${item.word} ${item.speed.toFixed(
+        2
+      )} WPM</li>`;
     })
     .join("");
+
+  let scoreMessage = "";
+  // Determine score message based on average typing speed
+  if (averageSpeed > 90) {
+    scoreMessage =
+      "Your typing is fantastic! Challenge yourself to a higher difficulty!";
+  } else if (averageSpeed > 60 && averageSpeed <= 90) {
+    scoreMessage =
+      "Great job! you're a fast typer! I suggest you challenge yourself";
+  } else if (averageSpeed > 40 && averageSpeed <= 60) {
+    scoreMessage =
+      "That was a good run! But I'm sure you can get faster than that!";
+  } else if (averageSpeed > 5 && averageSpeed < 40) {
+    scoreMessage =
+      "You're not fast enough just yet. Go ahead and practice more!";
+  } else {
+    scoreMessage = "Give it another try!";
+  }
+
   endGameEl.innerHTML = `
     <h1>Game Over!</h2>
-    <p>Your final score is ${score}</p>
+    <p>${scoreMessage}</p>
+    <p>Your average typing speed is ${averageSpeed.toFixed(2)} WPM </p>
+    <ul class="game-over-list__container">${typedWordsHTML}</ul>
     <button onclick="location.reload()">Play Again</button>
-    <ul>${typedWordsHTML}</ul>
+    
     `;
   endGameEl.style.display = "flex";
 }
+// Calculate the average of the WPM and based off the average, group them into 'comments' to replace Final score e.g., 'You need to practice more'
 
 settingsBtn.addEventListener("click", () => {
   settings.classList.toggle("hide");
