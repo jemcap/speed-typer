@@ -1,3 +1,4 @@
+const container = document.getElementById("container");
 const word = document.getElementById("word");
 const text = document.getElementById("text");
 const scoreEl = document.getElementById("score");
@@ -88,7 +89,7 @@ fetch("words.json")
         .split("")
         .map((letter, index) => {
           if (wordInput[index] === letter) {
-            return `<span class="correct">${letter}</span>`;
+            return `<span class="correct" style="background-color: rgba(0, 255, 0, 0.1);">${letter}</span>`;
           } else {
             return `<span class="incorrect">${letter}</span>`;
           }
@@ -103,7 +104,7 @@ fetch("words.json")
         genNewWord();
         startTime = Date.now();
         text.value = "";
-        typeTime.innerHTML = `Typing speed: ${typingSpeed.toFixed(2)} WPM`;
+        typeTime.innerHTML = `${typingSpeed.toFixed(2)} WPM`;
         addDifficultyTimer();
       }
     });
@@ -138,7 +139,7 @@ function updateTime() {
   timeEl.innerHTML = `${time}s`;
   timeEl.classList.add = "timer";
   if (time > 6) {
-    timeEl.style.color = "#fff";
+    timeEl.style.color = "#424245";
   } else if (time <= 6 && time > 3) {
     timeEl.style.color = "orange";
   } else if (time <= 3) {
@@ -181,7 +182,7 @@ function gameOver() {
       "Your typing is fantastic! Challenge yourself to a higher difficulty!";
   } else if (averageSpeed > 60 && averageSpeed <= 90) {
     scoreMessage =
-      "Great job! you're a fast typer! I suggest you challenge yourself";
+      "Great job! you're a fast typer! I suggest you challenge yourself to a higher difficulty.";
   } else if (averageSpeed > 40 && averageSpeed <= 60) {
     scoreMessage =
       "That was a good run! But I'm sure you can get faster than that!";
@@ -197,10 +198,11 @@ function gameOver() {
     <p>${scoreMessage}</p>
     <p>Your average typing speed is ${averageSpeed.toFixed(2)} WPM </p>
     <ul class="game-over-list__container">${typedWordsHTML}</ul>
-    <button onclick="location.reload()">Play Again</button>
+    <button class="play-again-btn" onclick="location.reload()">Play Again</button>
     
     `;
   endGameEl.style.display = "flex";
+  container.remove();
 }
 // Calculate the average of the WPM and based off the average, group them into 'comments' to replace Final score e.g., 'You need to practice more'
 
