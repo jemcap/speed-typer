@@ -11,6 +11,7 @@ const difficultySelect = document.getElementById("difficulty");
 const typeTime = document.getElementById("typing-speed");
 
 let typedWords = [];
+let scoresArr = JSON.parse(localStorage.getItem("highScores")) || [];
 
 let groupOfWords;
 
@@ -19,6 +20,7 @@ let typingSpeed;
 
 // Declare intial score
 let score;
+let averageSpeed;
 
 // Get difficulty from localStorage
 let difficulty =
@@ -157,7 +159,7 @@ function addTypedWord(word, speed) {
 
 function gameOver() {
   let totalSpeed = 0;
-  let averageSpeed = 0;
+  averageSpeed = 0;
 
   typedWords.forEach((word) => {
     totalSpeed += word.speed;
@@ -198,12 +200,39 @@ function gameOver() {
     <p>${scoreMessage}</p>
     <p>Your average typing speed is ${averageSpeed.toFixed(2)} WPM </p>
     <ul class="game-over-list__container">${typedWordsHTML}</ul>
+    <p>Enter initials: <input type="text" id="initials" max="3" /><button id="submit">Submit</button></p>
     <button class="play-again-btn" onclick="location.reload()">Play Again</button>
-    
     `;
   endGameEl.style.display = "flex";
   container.remove();
 }
+
+// Add event listener to the endGameEl for click events
+endGameEl.addEventListener("click", function (event) {
+  // Check if the click event occurred on the submit button
+  if (event.target.id === "submit") {
+    // Get the value of the initials input field
+    const initials = document.getElementById("initials").value.toUpperCase();
+    // Call a function to submit the initials
+
+    submitInitials(initials);
+    let playerData = difficulty + averageSpeed + " - " + initials.value;
+    scoresArr.push(playerData);
+    document.location.replace("/highscores.html");
+  }
+});
+
+// Function to submit initials
+function submitInitials(initials) {
+  let playerData = {
+    difficulty: difficulty,
+    initials: initials,
+    typingSpeed: parseFloat(averageSpeed.toFixed(2)),
+  };
+  scoresArr.push(playerData);
+  localStorage.setItem("highScores", JSON.stringify(scoresArr)); // Store the array in localStorage
+}
+
 // Calculate the average of the WPM and based off the average, group them into 'comments' to replace Final score e.g., 'You need to practice more'
 
 settingsBtn.addEventListener("click", () => {
