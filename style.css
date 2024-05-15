@@ -112,6 +112,7 @@ input {
   top: 0;
   left: 0;
   width: 100%;
+  height: 100%;
   z-index: 1;
   overflow-y: auto;
   padding: 50px;
@@ -138,4 +139,82 @@ input {
   padding-left: 0;
   padding: 20px;
   border-radius: 5px;
+}
+
+@media (max-width: 768px) {
+  .settings-btn {
+    bottom: 20px;
+    left: 20px;
+  }
+
+  .settings {
+    height: 60px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .h2 {
+    margin-bottom: 30px;
+  }
+
+  .input {
+    font-size: 12px;
+    padding: 10px 15px;
+  }
+
+  .score-container,
+  .time-container {
+    top: 50px;
+  }
+
+  .end-game-container {
+    padding: 30px;
+  }
+
+  .word {
+    margin: 30px 5px;
+    padding: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .settings-btn {
+    bottom: 15px;
+    left: 15px;
+  }
+
+  .settings {
+    height: 50px;
+  }
+
+  .container {
+    padding: 10px;
+    margin: 0px 20px;
+  }
+
+  h2 {
+    padding: 6px;
+    margin-bottom: 20px;
+  }
+
+  input {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+
+  .score-container,
+  .time-container {
+    top: 40px;
+  }
+
+  .end-game-container {
+    padding: 20px;
+  }
+
+  .word {
+    margin: 20px 5px;
+    padding: 20px;
+  }
 }
