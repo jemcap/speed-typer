@@ -230,10 +230,11 @@ function submitInitials(initials) {
     typingSpeed: parseFloat(averageSpeed.toFixed(2)),
   };
   scoresArr.push(playerData);
+
+  scoresArr.sort((a, b) => b.typingSpeed - a.typingSpeed);
+
   localStorage.setItem("highScores", JSON.stringify(scoresArr)); // Store the array in localStorage
 }
-
-// Calculate the average of the WPM and based off the average, group them into 'comments' to replace Final score e.g., 'You need to practice more'
 
 settingsBtn.addEventListener("click", () => {
   settings.classList.toggle("hide");
