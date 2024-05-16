@@ -196,7 +196,7 @@ function gameOver() {
   }
 
   endGameEl.innerHTML = `
-    <h1>Game Over!</h2>
+    <h1>Time's up!</h2>
     <p>${scoreMessage}</p>
     <p>Your average typing speed is ${averageSpeed.toFixed(2)} WPM </p>
     <ul class="game-over-list__container">${typedWordsHTML}</ul>
