@@ -13,10 +13,11 @@ Speed-Typer is a game-based tool designed to enhance hand dexterity and typing s
 ## Usage
 
 1. Launch the application by following the installation instructions.
-2. Choose a difficulty
+2. Choose a difficulty if none is selected already
 3. Start typing the displayed text as accurately and quickly as possible.
 4. Receive real-time feedback on your typing speed and accuracy.
 5. Continue practicing to improve your typing skills over time.
+6. Level up when you are confident enough or when your typing speed is quick enough.
 
 ## Contributing
 
