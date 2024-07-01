@@ -26,7 +26,7 @@ let averageSpeed;
 let difficulty =
   localStorage.getItem("difficulty") !== null
     ? localStorage.getItem("difficulty")
-    : "easy";
+    : localStorage.setItem("difficulty", "easy");
 console.log(difficulty);
 
 // Declare initial time based on difficulty
