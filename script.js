@@ -31,7 +31,7 @@ console.log(difficulty);
 
 // Declare initial time based on difficulty
 const initialTimes = {
-  easy: 10,
+  easy: 5,
   medium: 15,
   hard: 45,
   expert: 75,
@@ -171,9 +171,11 @@ function gameOver() {
 
   let typedWordsHTML = typedWords
     .map((item) => {
-      return `<li class="game-over__list">${item.word} ${item.speed.toFixed(
+      return `<li class="game-over__list">${
+        item.word
+      }  <span id="end__words-per-min">${item.speed.toFixed(
         2
-      )} WPM</li>`;
+      )} WPM</span></li>`;
     })
     .join("");
 
@@ -200,7 +202,7 @@ function gameOver() {
     <p>${scoreMessage}</p>
     <p>Your average typing speed is ${averageSpeed.toFixed(2)} WPM </p>
     <ul class="game-over-list__container">${typedWordsHTML}</ul>
-    <p>Enter initials: <input type="text" id="initials" max="3" /><button id="submit">Submit</button></p>
+    <p id="initials-box">Enter initials: <input type="text" id="initials" max="3" /><button id="submit">Submit</button></p>
     <button class="play-again-btn" onclick="location.reload()">Play Again</button>
     `;
   endGameEl.style.display = "flex";
