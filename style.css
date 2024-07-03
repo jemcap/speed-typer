@@ -90,18 +90,17 @@ h1 {
 input {
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid #000; /* Adjust the color as needed */
+  border-bottom: 2px solid #000; 
   color: #42424559;
   border-radius: 0;
   font-size: 14px;
   width: 300px;
   padding: 12px 20px;
   margin-top: 10px;
-  outline: none; /* Removes the default focus outline */
-}
+  outline: none; 
 
 input:focus {
-  border-bottom-color: #007bff; /* Change color on focus, adjust as needed */
+  border-bottom-color: #007bff; 
   transition: border-bottom-color 0.3s ease;
 }
 
