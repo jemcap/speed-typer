@@ -31,7 +31,7 @@ console.log(difficulty);
 
 // Declare initial time based on difficulty
 const initialTimes = {
-  easy: 5,
+  easy: 10,
   medium: 15,
   hard: 45,
   expert: 75,
