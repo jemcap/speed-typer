@@ -73,7 +73,6 @@ button:focus {
   position: relative;
   text-align: center;
   width: 1000px;
-  max-width: 90%;
 }
 
 h2 {
@@ -90,17 +89,18 @@ h1 {
 input {
   background-color: transparent;
   border: none;
-  border-bottom: 2px solid #000; 
+  border-bottom: 2px solid #000;
   color: #42424559;
   border-radius: 0;
   font-size: 14px;
   width: 300px;
   padding: 12px 20px;
   margin-top: 10px;
-  outline: none; 
+  outline: none;
+}
 
 input:focus {
-  border-bottom-color: #007bff; 
+  border-bottom-color: #007bff;
   transition: border-bottom-color 0.3s ease;
 }
 
